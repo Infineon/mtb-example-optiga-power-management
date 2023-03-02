@@ -46,7 +46,9 @@
 * Function Prototypes
 *******************************************************************************/
 static void optiga_lib_callback(void * context, optiga_lib_status_t return_status);
+#ifdef OPTIGA_TRUSTM_VDD
 static void example_optiga_util_hibernate_restore(void);
+#endif
 
 /*******************************************************************************
 * Global Variables
@@ -74,6 +76,18 @@ static void optiga_lib_callback(void * context, optiga_lib_status_t return_statu
     }
 }
 
+void example_performance_measurement(uint32_t* time_value, uint8_t time_reset_flag)
+{
+    if(TRUE == time_reset_flag)
+    {
+        *time_value = pal_os_timer_get_time_in_milliseconds();
+    }
+    else if(FALSE == time_reset_flag)
+    {
+        *time_value = pal_os_timer_get_time_in_milliseconds() - *time_value;
+    }
+}
+
 /**
  * The below example demonstrates hibernate and restore functionalities
  *
@@ -96,7 +110,7 @@ static void example_optiga_util_hibernate_restore(void)
     public_key_from_host_t public_key_details;
     //To store the generated public key as part of Generate key pair
     uint16_t public_key_length = sizeof(public_key);
-	uint32_t time_taken = 0;
+    uint32_t time_taken = 0;
 
     OPTIGA_EXAMPLE_LOG_MESSAGE("Begin demonstrating hibernate feature...\n");    
     OPTIGA_EXAMPLE_LOG_MESSAGE(__FUNCTION__);
@@ -310,13 +324,7 @@ int main(void)
 
     printf("****************** OPTIGA™ Trust M: Power management Example ****************** \r\n\n");
 
-    /* 
-      PAL stands for Pltaform Abstraction Layer in OPTIGA Host library 
-      Here all the target system relevant function started
-    */
-    pal_init();
-
-#ifdef CYBSP_TRUSTM_VDD
+#ifdef OPTIGA_TRUSTM_VDD
     example_optiga_util_hibernate_restore();
 #else
     OPTIGA_EXAMPLE_LOG_MESSAGE("If you see this message, it means that your board doesn't implement the OPTIGA VCC Control circuit.\n");
