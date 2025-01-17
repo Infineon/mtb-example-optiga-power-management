@@ -35,11 +35,11 @@
 #include "cybsp.h"
 #include "cy_retarget_io.h"
 
-#include "optiga/optiga_util.h"
-#include "optiga/optiga_crypt.h"
-#include "optiga/pal/pal_os_timer.h"
-#include "optiga/pal/pal_logger.h"
-#include "optiga/pal/pal.h"
+#include "include/optiga_util.h"
+#include "include/optiga_crypt.h"
+#include "include/pal/pal_os_timer.h"
+#include "include/pal/pal_logger.h"
+#include "include/pal/pal.h"
 #include "optiga_example.h"
 
 /*******************************************************************************
